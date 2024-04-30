@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          height: 100vh;
+          width: 100%;
+          margin-top: 100px;
+      }
+  </style>
+</head>
+<body>
+    <h1>To Do List</h1>
+    <br>
+    <form>
+        <div>
+            <input type="text" id="inputValue">
+            <button class="btn">Add To Do</button>
+        </div>
+        <section class="todo-list-elem"></section>
+    </form>
+
+    <script>
+        const todoElem =document.querySelector(".todo-list-elem");
+        const myInput =document.getElementById("inputValue");
+
+
+const getToDo =() =>{
+   return JSON.parse(localStorage.getItem("youtubeList"));
+};
+
+const addTodoLocalStorage =(localToDoList) =>{
+return localStorage.setItem("youtubeList", JSON.stringify(localToDoList));
+};
+
+let localToDoList = getToDo() || []; 
+const dynamicElem = (curElem) =>{
+    const divElem = document.createElement("div");
+   divElem.classList.add(".main_todo_div");
+   divElem.innerHTML= `<li>${curElem}</li> <button class="deleteBtn"> Delete </button>`;
+   todoElem.append(divElem);
+};
+
+const addToDoList= (e) =>{
+    e.preventDefault();
+const localToDo = myInput.value.trim();
+
+myInput.value ="";
+
+if(localToDo != "" && !localToDoList.includes(localToDo)){
+localToDoList.push(localToDo);
+localToDoList= [...new Set(localToDoList)];
+console.log(localToDoList);
+localStorage.setItem("youtubeList", JSON.stringify(localToDoList));
+
+
+
+dynamicElem(localToDo);
+}
+
+}
+
+const showTodo = () =>{
+console.log(localToDoList);
+localToDoList.forEach((curElem) =>{
+dynamicElem(curElem);
+});
+
+};
+showTodo();
+
+const removeTodo =(e) =>{
+    const todoRemove =e.target;
+    let todoListContent = todoRemove.previousElementSibling.innerText;
+    let parentElem = todoRemove.parentElement
+    console.log(todoListContent);
+
+    localToDoList = localToDoList.filter((curTodo) =>{
+        return curTodo != todoListContent.toLowerCase();
+    });
+
+    addTodoLocalStorage(localToDoList);
+    parentElem.remove();
+    console.log(localToDoList);
+}
+
+
+todoElem.addEventListener("click" , (e) => {
+e.preventDefault();
+if(e.target.classList.contains("deleteBtn")){
+    removeTodo(e);
+}
+
+        })
+
+
+        document.querySelector(".btn").addEventListener("click", (e)=>{
+            addToDoList(e);
+        })
+     
+    </script>
+</body>
+</html>
+
+
+<!-- 1. input field create kiya
+2. button create kiya
+3. form ke ander section banaya taki javascript ke help se html bna ske uss section ke ander 
+4.input field and section ke reference liya
+5 then button class ka reference leke usme click krke event fire kiya add krne ka 
+6. form ko prevent kiya and add ka function bna ke usme div create kiya
+7. usme class add kiya
+8. fr li create kiya and usme value pass kiya template literals button create kiya delete ke sath
+9. fr append kiya uss div ko section mei form ke ander.
+10.ab aaye hue data ko local storage mei add krne ke liye sbse pahle data ko trim kiya fr data ko array bna ke push kiya
+11. fr set ke help se usko unique banaya fr usko local storage mei array data ko string form mei add kiya
+12. fr uss string data ko page refresh krne ke baad dikhane ke liye array mei convert krke get kiya local storage se 
+13 jo data local storage se get kiye hai wo show krwana hai page refresh hone pr 
+14. jo data add kre usme duplicate data add mt ho ui side 
+15. fr add kiye hue data ko delete karenge event delegation use krke
+16.add we have to add updated data on local storage -->
