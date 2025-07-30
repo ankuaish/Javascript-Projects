@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Timer</title>
+    <link rel="stylesheet" href="style1.css" />
+  </head>
+  <body>
+    <section>
+      <p id="countDown">0</p>
+      <div class="buttons">
+        <button class="start_btn">Start</button>
+        <button class="reset_btn">Reset</button>
+        <button class="stop_btn">Stop</button>
+        <button class="time_btn">getTime</button>
+        <button class="clear_btn">clearTime</button>
+      </div>
+      <div class="resetValue"></div>
+    </section>
+    <script>
+      const countDownElem = document.getElementById("countDown");
+const resetValueElem =document.querySelector(".resetValue");
+let startCount =0;
+let intervalId ;
+
+      // Function to start the timer
+     const startTime =() =>{
+        intervalId = setInterval(() => {
+        countDownElem.innerText = startCount++;
+       }, 1000);
+     }
+
+      // Function to stop the timer and show stop time
+     const stopTime =() =>{
+        showTime();
+clearInterval(intervalId);
+     }
+
+      // Function to reset the timer
+     const resetTime =() =>{
+        startCount = 0;
+        countDownElem.innerText= startCount;
+        clearInterval(intervalId);
+     }
+
+      // Function to show stop value
+     const showTime = () =>{
+const newPara =document.createElement("p");
+newPara.innerText=`The stop time is ${startCount - 1}`
+resetValueElem.append(newPara);
+     }
+      // Function to show stop time
+      const clearTime= () =>{
+        resetValueElem.innerHTML="";
+      }
+      
+      // Event listeners
+      document.querySelector(".start_btn").addEventListener("click", startTime);
+      document.querySelector(".reset_btn").addEventListener("click", resetTime);
+      document.querySelector(".stop_btn").addEventListener("click", stopTime);
+      document.querySelector(".time_btn").addEventListener("click", showTime);
+      document.querySelector(".clear_btn").addEventListener("click", clearTime);
+      
+    </script>
+  </body>
+</html>
